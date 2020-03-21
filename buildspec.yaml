@@ -21,17 +21,17 @@ phases:
     commands:
       - aws cloudformation package --template-file template.yaml --s3-bucket $BUCKET --output-template-file outputtemplate.yaml
 
-      - cd $BUILD_HOME/lambda/botNotify/botNotify.go
+      - cd $BUILD_HOME/lambda/botNotify
       - go build botNotify.go
       - zip botNotify.zip botNotify
       - aws s3 cp botNotify.zip s3://lambda-zip.sila/botNotify.zip
 
-      - cd $BUILD_HOME/lambda/botUploadImg/botUploadImg.go
+      - cd $BUILD_HOME/lambda/botUploadImg
       - go build botUploadImg.go
       - zip botUploadImg.zip botUploadImg
       - aws s3 cp botUploadImg.zip s3://lambda-zip.sila/botUploadImg.zip
 
-      - cd $BUILD_HOME/lambda/bot_event/bot_event.go
+      - cd $BUILD_HOME/lambda/bot_event
       - go build bot_event.go
       - zip bot_event.zip bot_event
       - aws s3 cp bot_event.zip s3://lambda-zip.sila/bot_event.zip
