@@ -124,7 +124,7 @@ Resources:
     Type: AWS::ApiGateway::Method
     Properties:
       HttpMethod: GET
-      ResourceId: !Ref Notify
+      ResourceId: !Ref NotifyMsg
       RestApiId: !Ref RestApi
       AuthorizationType: NONE
       Integration:
