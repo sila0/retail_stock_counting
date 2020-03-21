@@ -13,7 +13,7 @@ Parameters:
     Default: master
   GitHubToken:
     Description: 'Github token'
-    Default: ee3cfbd06aacf61987716e81aae57a82e3d970e7
+    Default: f59273f30fb277c8b9c7b2c37f0f9f69021ceb3a
     NoEcho: true
     Type: String
   BuildType:
@@ -38,7 +38,6 @@ Resources:
     Type: AWS::S3::Bucket
     Properties:
       BucketName: lambda-zip.sila
-
   CodeBuildRole:
     Type: AWS::IAM::Role
     Properties:
@@ -167,7 +166,7 @@ Resources:
               RunOrder: 2
               Configuration:
                 Owner: !Ref GitHubUser
-                Repo: cc-stock-services
+                Repo: !Ref GitHubRepo
                 Branch: !Ref GitHubBranch
                 OAuthToken: !Ref GitHubToken 
               InputArtifacts: []
@@ -204,7 +203,7 @@ Resources:
               Configuration:
                 ActionMode: CREATE_UPDATE
                 Capabilities: CAPABILITY_IAM,CAPABILITY_AUTO_EXPAND
-                RoleArn: !ImportValue CloudFormationRoleArn
+                RoleArn: !GetAtt CloudFormationRole.Arn
                 StackName: !Sub ${AWS::StackName}-deploy
                 TemplatePath: BuildOutput::outputtemplate.yaml
               InputArtifacts:
@@ -212,4 +211,4 @@ Resources:
               OutputArtifacts: []
       ArtifactStore:
         Type: S3
-        Location: !ImportValue PipelineBucketID
+        Location: !Ref AsmBucket
