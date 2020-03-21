@@ -1,0 +1,61 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Description: "Initial apigateway resource and map to lambda"
+
+Parameters:
+  MemorySize:
+    Type: String
+    Default: 128
+  Timeout:
+    Type: String
+    Default: 5
+  Runtime:
+    Type: String
+    Default: go1.x
+  Prefix:
+    Type: String
+    Default: dev_
+
+Resources:
+  # botNotify
+  botNotify:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Sub ${Prefix}botNotify
+      Handler: botNotify
+      Role: !ImportValue DatabaseRoleArn
+      Code:
+        S3Bucket: lambda-zip.sila
+        S3Key: botNotify.zip
+      Runtime: !Ref Runtime
+      MemorySize: !Ref MemorySize
+      Timeout: !Ref Timeout
+
+  # bot_event
+  bot_event:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Sub ${Prefix}bot_event
+      Handler: bot_event
+      Role: !ImportValue DatabaseRoleArn
+      Code:
+        S3Bucket: lambda-zip.sila
+        S3Key: bot_event.zip
+      Runtime: !Ref Runtime
+      MemorySize: !Ref MemorySize
+      Timeout: !Ref Timeout
+
+  # botUploadImg
+  botUploadImg:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Sub ${Prefix}botUploadImg
+      Handler: botUploadImg
+      Role: !ImportValue DatabaseRoleArn
+      Code:
+        S3Bucket: lambda-zip.sila
+        S3Key: botUploadImg.zip
+      Runtime: !Ref Runtime
+      MemorySize: !Ref MemorySize
+      Timeout: !Ref Timeout
+
