@@ -59,6 +59,7 @@ Resources:
       MemorySize: !Ref MemorySize
       Timeout: !Ref Timeout
   
+  # Resource
   RestApi:
     Type: AWS::ApiGateway::RestApi
     Properties:
@@ -86,3 +87,92 @@ Resources:
       RestApiId: !Ref RestApi
       ParentId: !GetAtt RestApi.RootResourceId
       PathPart: upload
+
+  # Permission
+  botNotifyPerm:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !GetAtt botNotify.Arn
+      Action: lambda:InvokeFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub
+        - arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${restApiID}/*/GET/notify/*
+        - restApiID: !Ref RestApi
+
+  botEventPerm:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !GetAtt botEvent.Arn
+      Action: lambda:InvokeFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub
+        - arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${restApiID}/*/POST/
+        - restApiID: !Ref RestApi
+
+  botUploadImgPerm:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !GetAtt botUploadImg.Arn
+      Action: lambda:InvokeFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub
+        - arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${restApiID}/*/POST/upload
+        - restApiID: !Ref RestApi
+
+  # Method
+  botNotifyMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      HttpMethod: GET
+      ResourceId: !Ref Notify
+      RestApiId: !Ref RestApi
+      Integration:
+        IntegrationHttpMethod: POST
+        IntegrationResponses:
+          - StatusCode: 200
+        Type: AWS_PROXY
+        Uri: !Sub 
+          - arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${botNotifyFuncArn}/invocations
+          - botNotifyFuncArn: !GetAtt botNotify.Arn
+      MethodResponses:
+        - StatusCode: 200
+          ResponseModels:
+            application/json: Empty
+
+  botEventMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      HttpMethod: POST
+      ResourceId: !GetAtt RestApi.RootResourceId
+      RestApiId: !Ref RestApi
+      Integration:
+        IntegrationHttpMethod: POST
+        IntegrationResponses:
+          - StatusCode: 200
+        Type: AWS_PROXY
+        Uri: !Sub 
+          - arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${botEventFuncArn}/invocations
+          - botEventFuncArn: !GetAtt botEvent.Arn
+      MethodResponses:
+        - StatusCode: 200
+          ResponseModels:
+            application/json: Empty
+
+  botUploadImgMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      HttpMethod: POST
+      ResourceId: !Ref botUploadImg
+      RestApiId: !Ref RestApi
+      Integration:
+        IntegrationHttpMethod: POST
+        IntegrationResponses:
+          - StatusCode: 200
+        Type: AWS_PROXY
+        Uri: !Sub 
+          - arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${botUploadImgFuncArn}/invocations
+          - botUploadImgFuncArn: !GetAtt botUploadImg.Arn
+      MethodResponses:
+        - StatusCode: 200
+          ResponseModels:
+            application/json: Empty
