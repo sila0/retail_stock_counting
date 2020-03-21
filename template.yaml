@@ -32,7 +32,7 @@ Resources:
       Timeout: !Ref Timeout
 
   # bot_event
-  bot_event:
+  botEvent:
     Type: AWS::Lambda::Function
     Properties:
       FunctionName: !Sub ${Prefix}bot_event
