@@ -126,6 +126,7 @@ Resources:
       HttpMethod: GET
       ResourceId: !Ref Notify
       RestApiId: !Ref RestApi
+      AuthorizationType: NONE
       Integration:
         IntegrationHttpMethod: POST
         IntegrationResponses:
@@ -145,6 +146,7 @@ Resources:
       HttpMethod: POST
       ResourceId: !GetAtt RestApi.RootResourceId
       RestApiId: !Ref RestApi
+      AuthorizationType: NONE
       Integration:
         IntegrationHttpMethod: POST
         IntegrationResponses:
@@ -164,6 +166,7 @@ Resources:
       HttpMethod: POST
       ResourceId: !Ref botUploadImg
       RestApiId: !Ref RestApi
+      AuthorizationType: NONE
       Integration:
         IntegrationHttpMethod: POST
         IntegrationResponses:
