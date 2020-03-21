@@ -38,6 +38,7 @@ Resources:
     Type: AWS::S3::Bucket
     Properties:
       BucketName: lambda-zip.sila
+  
   CodeBuildRole:
     Type: AWS::IAM::Role
     Properties:
@@ -131,7 +132,49 @@ Resources:
                 - s3:GetBucketVersioning
                 Resource: "*"
                 Effect: Allow
+  LambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Path: "/"
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AWSXrayWriteOnlyAccess
+        - arn:aws:iam::aws:policy/AmazonS3FullAccess
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+  LambdaRoleWithS3:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Path: "/"
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AWSXrayWriteOnlyAccess
+        - arn:aws:iam::aws:policy/AmazonS3FullAccess
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Policies:
+        - PolicyName: cfn-lambda-s3-pipeline
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Action:
+                - s3:*
 
+                Resource: "*"
+                Effect: Allow
+                     
   CodeBuildDeploySite:
     Type: AWS::CodeBuild::Project
     Properties:
@@ -212,3 +255,14 @@ Resources:
       ArtifactStore:
         Type: S3
         Location: !Ref AsmBucket
+
+Outputs:
+  LambdaRoleArn:
+    Value: !GetAtt LambdaRole.Arn
+    Export: 
+      Name: LambdaRoleArn
+  LambdaWithS3RoleArn:
+    Value: !GetAtt LambdaRoleWithS3.Arn
+    Export: 
+      Name: LambdaWithS3RoleArn
+        

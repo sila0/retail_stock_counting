@@ -23,7 +23,7 @@ Resources:
     Properties:
       FunctionName: !Sub ${Prefix}botNotify
       Handler: botNotify
-      Role: !ImportValue DatabaseRoleArn
+      Role: !ImportValue LambdaRoleArn
       Code:
         S3Bucket: lambda-zip.sila
         S3Key: botNotify.zip
@@ -37,7 +37,7 @@ Resources:
     Properties:
       FunctionName: !Sub ${Prefix}bot_event
       Handler: bot_event
-      Role: !ImportValue DatabaseRoleArn
+      Role: !ImportValue LambdaRoleArn
       Code:
         S3Bucket: lambda-zip.sila
         S3Key: bot_event.zip
@@ -51,7 +51,7 @@ Resources:
     Properties:
       FunctionName: !Sub ${Prefix}botUploadImg
       Handler: botUploadImg
-      Role: !ImportValue DatabaseRoleArn
+      Role: !ImportValue LambdaWithS3RoleArn
       Code:
         S3Bucket: lambda-zip.sila
         S3Key: botUploadImg.zip
