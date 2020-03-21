@@ -58,4 +58,31 @@ Resources:
       Runtime: !Ref Runtime
       MemorySize: !Ref MemorySize
       Timeout: !Ref Timeout
+  
+  RestApi:
+    Type: AWS::ApiGateway::RestApi
+    Properties:
+      Name: !Ref ApiGatewayName
+      Description: "Line Bot"
+      FailOnWarnings: true
 
+  Notify:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      RestApiId: !Ref RestApi
+      ParentId: !GetAtt RestApi.RootResourceId
+      PathPart: notify
+
+  NotifyMsg:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      RestApiId: !Ref RestApi
+      ParentId: !Ref Notify
+      PathPart: "{msg}"
+
+  Upload:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      RestApiId: !Ref RestApi
+      ParentId: !Ref Notify
+      PathPart: upload
