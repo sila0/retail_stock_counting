@@ -164,7 +164,7 @@ Resources:
     Type: AWS::ApiGateway::Method
     Properties:
       HttpMethod: POST
-      ResourceId: !Ref botUploadImg
+      ResourceId: !Ref Upload
       RestApiId: !Ref RestApi
       AuthorizationType: NONE
       Integration:
