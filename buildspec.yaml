@@ -1,0 +1,51 @@
+version: 0.2
+
+env:
+  parameter-store:
+    build_ssh_key: "build_ssh_key"
+
+phases:
+  install:
+    runtime-versions:
+        golang: 1.13
+    commands:
+      - go get github.com/aws/aws-lambda-go/lambda
+      - go get github.com/aws/aws-lambda-go/events
+      - go get -u github.com/aws/aws-sdk-go/...
+      - go get github.com/line/line-bot-sdk-go/linebot
+      
+  pre_build:
+    commands:
+      - export BUCKET=pipeline-artifacts.sila
+      - export GOOS=linux
+      - export GOARCH=amd64
+      - export BUILD_HOME=$(pwd)
+
+  build:
+    commands:
+      - aws cloudformation package --template-file template.yaml --s3-bucket $BUCKET --output-template-file outputtemplate.yaml
+
+      - cd $BUILD_HOME/lambda/botNotify/botNotify.go
+      - go build botNotify.go
+      - zip botNotify.zip botNotify
+      - aws s3 cp botNotify.zip s3://lambda-zip.sila/botNotify.zip
+
+      - cd $BUILD_HOME/lambda/botUploadImg/botUploadImg.go
+      - go build botUploadImg.go
+      - zip botUploadImg.zip botUploadImg
+      - aws s3 cp botUploadImg.zip s3://lambda-zip.sila/botUploadImg.zip
+
+      - cd $BUILD_HOME/lambda/bot_event/bot_event.go
+      - go build bot_event.go
+      - zip bot_event.zip bot_event
+      - aws s3 cp bot_event.zip s3://lambda-zip.sila/bot_event.zip
+
+  post_build:
+    commands:
+      - echo "stop" 
+
+artifacts:
+  type: zip
+  files:
+    - template.yaml
+    - outputtemplate.yaml
