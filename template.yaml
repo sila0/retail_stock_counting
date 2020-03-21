@@ -62,7 +62,7 @@ Resources:
   RestApi:
     Type: AWS::ApiGateway::RestApi
     Properties:
-      Name: !Ref ApiGatewayName
+      Name: LineBot
       Description: "Line Bot"
       FailOnWarnings: true
 
@@ -84,5 +84,5 @@ Resources:
     Type: AWS::ApiGateway::Resource
     Properties:
       RestApiId: !Ref RestApi
-      ParentId: !Ref Notify
+      ParentId: !GetAtt RestApi.RootResourceId
       PathPart: upload
