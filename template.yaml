@@ -200,9 +200,12 @@ Resources:
 
   # Deploy API
   Deployment:
-    DependsOn: MyMethod
-      Type: 'AWS::ApiGateway::Deployment'
-      Properties:
-        RestApiId: !Ref RestApi
-        Description: My deployment
-        StageName: Test
+    DependsOn: 
+      - botNotifyMethod
+      - botEventMethod
+      - botUploadImgMethod
+    Type: AWS::ApiGateway::Deployment
+    Properties:
+      RestApiId: !Ref RestApi
+      Description: My LineBot
+      StageName: Test
