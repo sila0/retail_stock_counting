@@ -5,6 +5,7 @@ Count bottles on a shelf and alert via Line application when the items getting o
 - Tensorflow Object Detection API
 - Line Messaging API SDK for Go 
 - AWS cli
+- Web hosting (use S3 and Cloudfront for testing purpose)
 
 # Installation
 You can create all required stack on AWS include S3, Api Gateway, Lambda Function and CodePipeline by running the following command:
@@ -21,3 +22,4 @@ Copy main.py to models/research/object_detection directory.
 Now you can detect bottle and get alert via Line application.
 
 ![](images/11628688176542.jpg)
+![](images/line.png)
