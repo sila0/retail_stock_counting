@@ -19,3 +19,5 @@ Install Tensorflow Object Detection API by following the line below,
 Copy main.py to models/research/object_detection directory.
 
 Now you can detect bottle and get alert via Line application.
+
+![](images/11628688176542.jpg)
