@@ -8,7 +8,10 @@ Count bottles on a shelf and alert via Line application when the items getting o
 - Web hosting (use S3 and Cloudfront for testing purpose)
 
 # Installation
-You can create all required stack on AWS include S3, Api Gateway, Lambda Function and CodePipeline by running the following command:
+First, you have to configure AWS Cli as following:
+- https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html#cli-quick-configuration
+
+Then create all required stack on AWS include S3, Api Gateway, Lambda Function and CodePipeline by running the following command:
 - aws cloudformation create-stack --stack-name StockCountStack --template-body file://cloudformation.yaml
 
 Setup line developer account by following the link below, 
