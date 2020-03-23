@@ -197,3 +197,12 @@ Resources:
         - StatusCode: 200
           ResponseModels:
             application/json: Empty
+
+  # Deploy API
+  Deployment:
+    DependsOn: MyMethod
+      Type: 'AWS::ApiGateway::Deployment'
+      Properties:
+        RestApiId: !Ref RestApi
+        Description: My deployment
+        StageName: Test
