@@ -10,7 +10,7 @@ Count bottles on a shelf and alert via Line application when the items getting o
 You can create all required stack on AWS include S3, Api Gateway, Lambda Function and CodePipeline by running the following command:
 - aws cloudformation create-stack --stack-name StockCountStack --template-body file://cloudformation.yaml
 
-Setup line developer account by the link below, 
+Setup line developer account by following the link below, 
 - https://developers.line.biz/en/docs/messaging-api/getting-started/#creating-a-channel
 
 Install Tensorflow Object Detection API by following the line below, 
