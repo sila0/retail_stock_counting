@@ -3,6 +3,15 @@ AWSTemplateFormatVersion: "2010-09-09"
 Description: "Initial apigateway resource and map to lambda"
 
 Parameters:
+  CHANNEL_SECRET:
+    Type: String
+    Default: "<channel_secret>"
+  CHANNEL_TOKEN:
+    Type: String
+    Default: "<channel_token>"
+  RECEIVER:
+    Type: String
+    Default: "<receiver>"
   MemorySize:
     Type: String
     Default: 128
@@ -17,7 +26,8 @@ Parameters:
     Default: dev_
 
 Resources:
-  # botNotify
+
+  # Lambda
   botNotify:
     Type: AWS::Lambda::Function
     Properties:
@@ -27,11 +37,15 @@ Resources:
       Code:
         S3Bucket: lambda-zip.sila
         S3Key: botNotify.zip
+      Environment: 
+        Variables:
+          CHANNEL_SECRET: !Ref CHANNEL_SECRET
+          CHANNEL_TOKEN: !Ref CHANNEL_TOKEN
+          RECEIVER: !Ref RECEIVER
       Runtime: !Ref Runtime
       MemorySize: !Ref MemorySize
       Timeout: !Ref Timeout
 
-  # bot_event
   botEvent:
     Type: AWS::Lambda::Function
     Properties:
@@ -45,7 +59,6 @@ Resources:
       MemorySize: !Ref MemorySize
       Timeout: !Ref Timeout
 
-  # botUploadImg
   botUploadImg:
     Type: AWS::Lambda::Function
     Properties:
@@ -55,6 +68,11 @@ Resources:
       Code:
         S3Bucket: lambda-zip.sila
         S3Key: botUploadImg.zip
+      Environment: 
+        Variables:
+          CHANNEL_SECRET: !Ref CHANNEL_SECRET
+          CHANNEL_TOKEN: !Ref CHANNEL_TOKEN
+          RECEIVER: !Ref RECEIVER
       Runtime: !Ref Runtime
       MemorySize: !Ref MemorySize
       Timeout: !Ref Timeout
