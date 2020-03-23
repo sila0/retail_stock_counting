@@ -3,13 +3,13 @@ AWSTemplateFormatVersion: "2010-09-09"
 Description: "Initial apigateway resource and map to lambda"
 
 Parameters:
-  CHANNEL_SECRET:
+  ChSecret:
     Type: String
     Default: "<channel_secret>"
-  CHANNEL_TOKEN:
+  ChToken:
     Type: String
     Default: "<channel_token>"
-  RECEIVER:
+  Receiver:
     Type: String
     Default: "<receiver>"
   MemorySize:
@@ -39,9 +39,9 @@ Resources:
         S3Key: botNotify.zip
       Environment: 
         Variables:
-          CHANNEL_SECRET: !Ref CHANNEL_SECRET
-          CHANNEL_TOKEN: !Ref CHANNEL_TOKEN
-          RECEIVER: !Ref RECEIVER
+          CHANNEL_SECRET: !Ref ChSecret
+          CHANNEL_TOKEN: !Ref ChToken
+          RECEIVER: !Ref Receiver
       Runtime: !Ref Runtime
       MemorySize: !Ref MemorySize
       Timeout: !Ref Timeout
@@ -70,9 +70,9 @@ Resources:
         S3Key: botUploadImg.zip
       Environment: 
         Variables:
-          CHANNEL_SECRET: !Ref CHANNEL_SECRET
-          CHANNEL_TOKEN: !Ref CHANNEL_TOKEN
-          RECEIVER: !Ref RECEIVER
+          CHANNEL_SECRET: !Ref ChSecret
+          CHANNEL_TOKEN: !Ref ChToken
+          RECEIVER: !Ref Receiver
       Runtime: !Ref Runtime
       MemorySize: !Ref MemorySize
       Timeout: !Ref Timeout
